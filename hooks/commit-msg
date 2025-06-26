@@ -1,0 +1,14 @@
+#!/bin/sh
+
+commit_msg_file=$1
+commit_msg=$(cat "$commit_msg_file")
+
+validation="^(feat|fix|docs|test)(\([a-z0-9\-]+\))?: .{1,}"      
+
+if echo "$commit_msg" | grep -qE "$validation"; then
+  exit 0
+else
+  echo "El mensaje de commit no sigue la Convención de Commits." 
+  echo "Ejemplo de mensaje: 'feat(tf-module):', 'fix(hooks)', 'docs(readme)' o 'test(py)'"
+  exit 1
+fi

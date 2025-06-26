@@ -1,0 +1,29 @@
+#!/bin/sh
+
+echo "Ejecutando validaciones pre-push..."
+
+current_branch=$(git symbolic-ref --short HEAD)
+echo "Rama actual: $current_branch"
+
+if [ "$current_branch" = "main" ]; then
+    echo "Push directo a rama principal no permitido."
+    echo "Protección local, complementa reglas de GitHub."
+    exit 1
+fi
+
+if [ -d "tests" ] && [ -n "$(find tests -name '*.py' -print -quit)" ]; then
+    echo "Ejecutando tests"
+    python -m pytest tests/ -v
+    if [ $? -ne 0 ]; then
+        echo "Tests fallaron. Fix antes de push."
+        exit 1
+    fi
+    echo "Tests pasaron."
+fi
+
+if git diff --quiet HEAD~1 HEAD 2>/dev/null; then
+    echo "No hay cambios para pushear."
+fi
+
+echo "Validaciones pre-push completadas. Push puede continuar."
+exit 0

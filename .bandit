@@ -1,0 +1,6 @@
+[bandit]
+exclude = .git,.pytest_cache,.venv,venv,.terraform,tests
+skips = B101,B311
+severity-level = MEDIUM
+confidence-level = MEDIUM
+recursive = True

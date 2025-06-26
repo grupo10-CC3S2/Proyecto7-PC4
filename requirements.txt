@@ -1,0 +1,8 @@
+black
+flake8
+bandit
+pytest
+pytest-cov
+pytest-mock
+pytest-html
+kubernetes

@@ -1,7 +1,5 @@
 # Proyecto7-PC4
 # Observabilidad de clúster Kubernetes local (mini-monitoring)
-# test-repo-pc4
-# Proyecto 7: Observabilidad de clúster Kubernetes local (mini-monitoring)
 
 ## Integrantes:
 
@@ -55,5 +53,3 @@ Para borrar todo lo creado y liberar recursos:
    ```sh
    docker image rm timeserver
    ```
-
-`linea de prueba`

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+PY_FILES=$(git diff --cached --name-only | grep '\.py$')
+
+echo "$PY_FILES"
+
+if [ -z "$PY_FILES" ]; then
+    echo "Sin archivos python para formateo o linting."
+    exit 0
+fi
+
+for file in $PY_FILES; do
+    black "$file"
+    flake8 "$file" || exit 1    # al ultimo para ver si hay errores que no son solucionados por black
+done
+
+exit 0

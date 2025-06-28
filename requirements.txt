@@ -6,3 +6,6 @@ pytest-cov
 pytest-mock
 pytest-html
 kubernetes
+pandas
+tabulate
+plotly.express

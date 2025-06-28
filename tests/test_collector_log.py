@@ -1,6 +1,6 @@
 import pytest
 import subprocess
-from scripts.log_collector import get_pods, collect_logs, get_events
+from scripts.log_collector.log_collector import get_pods, collect_logs, get_events
 
 namespace = "default"
 
@@ -29,10 +29,7 @@ def test_collect_logs_xfail_and_fail():
         pytest.xfail("No hay pods disponibles en el namespace indicado")
 
     collect_logs(pods[0], namespace=namespace2)
-    subprocess.run(
-        ["rm", "-r", "logs"],
-        capture_output=True, text=True, check=True
-    )
+    subprocess.run(["rm", "-r", "logs"], capture_output=True, text=True, check=True)
 
 
 @pytest.mark.xfail(reason="Algún pod no está disponible")
@@ -42,7 +39,4 @@ def test_collect_logs_xfail_not_fail():
         pytest.xfail("No hay pods disponibles en el namespace indicado")
 
     collect_logs(pods[0], namespace=namespace2)
-    subprocess.run(
-        ["rm", "-r", "logs"],
-        capture_output=True, text=True, check=True
-    )
+    subprocess.run(["rm", "-r", "logs"], capture_output=True, text=True, check=True)

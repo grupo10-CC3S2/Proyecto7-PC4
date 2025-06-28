@@ -14,13 +14,15 @@ import json
 
 
 def find_root_dir(target_folder_name):
-    '''
+    """
     Busca el directorio raíz del proyecto para el nombre de carpeta especificado.
-    '''
+    """
     current = Path(__file__).resolve()
     while current.name != target_folder_name:
         if current.parent == current:
-            raise FileNotFoundError(f"No se encontró el directorio '{target_folder_name}' hacia arriba desde {__file__}")
+            raise FileNotFoundError(
+                f"No se encontró el directorio '{target_folder_name}' hacia arriba desde {__file__}"
+            )
         current = current.parent
     return current
 
@@ -32,14 +34,29 @@ metrics_dir.mkdir(exist_ok=True)
 
 
 def get_namespaces():
-    namespaces = subprocess.run(["kubectl", "get", "namespaces", "-o", "name"], capture_output=True, text=True, check=True)
-    all_namespaces = [line.replace("namespace/", "") for line in namespaces.stdout.strip().splitlines()]
+    namespaces = subprocess.run(
+        ["kubectl", "get", "namespaces", "-o", "name"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    all_namespaces = [
+        line.replace("namespace/", "")
+        for line in namespaces.stdout.strip().splitlines()
+    ]
     return all_namespaces
 
 
 def get_nodes():
-    nodes = subprocess.run(["kubectl", "get", "nodes", "-o", "name"], capture_output=True, text=True, check=True)
-    all_nodes = [line.replace("node/", "") for line in nodes.stdout.strip().splitlines()]
+    nodes = subprocess.run(
+        ["kubectl", "get", "nodes", "-o", "name"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    all_nodes = [
+        line.replace("node/", "") for line in nodes.stdout.strip().splitlines()
+    ]
     return all_nodes
 
 
@@ -48,11 +65,15 @@ def collect_metrics__pods(namespaces):
     pods_dir.mkdir(exist_ok=True)
     print("Recolectando métricas de todos los pods...")
     for names in namespaces:
-        with open(pods_dir / f"{names}_metrics.csv", "a", encoding="utf-8") as pod_metrics_file:
+        with open(
+            pods_dir / f"{names}_metrics.csv", "a", encoding="utf-8"
+        ) as pod_metrics_file:
             try:
                 metrics_result = subprocess.run(
                     ["kubectl", "top", "pods", "-n", names],
-                    capture_output=True, text=True, check=True
+                    capture_output=True,
+                    text=True,
+                    check=True,
                 )
                 pod_metrics_file.write(metrics_result.stdout)
                 lines = metrics_result.stdout.strip().split("\n")
@@ -68,7 +89,9 @@ def collect_metrics__pods(namespaces):
                     with open(json_path, "w", encoding="utf-8") as jf:
                         json.dump(metrics, jf, indent=2)
             except subprocess.CalledProcessError as e:
-                print(f"Error al obtener métricas de los pods en el namespace {names}: {e.stderr}")
+                print(
+                    f"Error al obtener métricas de los pods en el namespace {names}: {e.stderr}"
+                )
     path = metrics_dir / "pods"
     archivos = os.listdir(path)
     print(f"Recolección de métricas de pods completada y guardados en: {archivos}")
@@ -80,11 +103,15 @@ def collect_metrics__nodes(nodes):
     nodes_dir.mkdir(exist_ok=True)
     print("Recolectando métricas de todos los nodos...")
     for node in nodes:
-        with open(nodes_dir / f"{node}_metrics.csv", "a", encoding="utf-8") as node_metrics_file:
+        with open(
+            nodes_dir / f"{node}_metrics.csv", "a", encoding="utf-8"
+        ) as node_metrics_file:
             try:
                 metrics_result = subprocess.run(
                     ["kubectl", "top", "nodes"],
-                    capture_output=True, text=True, check=True
+                    capture_output=True,
+                    text=True,
+                    check=True,
                 )
                 node_metrics_file.write(metrics_result.stdout)
                 lines = metrics_result.stdout.strip().split("\n")

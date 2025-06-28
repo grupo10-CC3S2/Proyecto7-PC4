@@ -11,7 +11,8 @@
 
 1. Construir la imagen Docker local:
    ```sh
-   docker build -t timeserver:latest app
+   docker build -t timeserver:v1 app
+   docker build -t timeserver:v2 app
    ```
 2. Verificar que Kubernetes esta activado:
    ```sh

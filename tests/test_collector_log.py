@@ -1,6 +1,6 @@
 import pytest
 import subprocess
-from scripts.log_collector import get_pods, collect_logs, get_events
+from scripts.log_collector.log_collector import get_pods, collect_logs, get_events
 
 namespace = "default"
 

@@ -8,7 +8,9 @@ def find_root_dir(target_folder_name):
     current = Path(__file__).resolve()
     while current.name != target_folder_name:
         if current.parent == current:
-            raise FileNotFoundError(f"No se encontró el directorio '{target_folder_name}' hacia arriba desde {__file__}")
+            raise FileNotFoundError(
+                f"No se encontró el directorio '{target_folder_name}' hacia arriba desde {__file__}"
+            )
         current = current.parent
     return current
 
@@ -27,7 +29,9 @@ def get_pods(namespace="default"):
     try:
         result = subprocess.run(
             ["kubectl", "get", "pods", "-n", namespace, "-o", "name"],
-            capture_output=True, text=True, check=True
+            capture_output=True,
+            text=True,
+            check=True,
         )
         pods = [line.replace("pod/", "") for line in result.stdout.strip().splitlines()]
         return pods
@@ -40,12 +44,16 @@ def collect_logs(pods, namespace="default"):
     for pod in pods:
         print(f"Recolectando logds del pod: {pod}")
         with open(logs_dir / "all_pods.log", "a", encoding="utf-8") as all_log_file:
-            all_log_file.write(f"=================== Logs del pod: {pod} ===================\n")
+            all_log_file.write(
+                f"=================== Logs del pod: {pod} ===================\n"
+            )
 
             try:
                 log_result = subprocess.run(
                     ["kubectl", "logs", pod, "-n", namespace],
-                    capture_output=True, text=True, check=True
+                    capture_output=True,
+                    text=True,
+                    check=True,
                 )
 
                 name_pod = pod.replace("timeserver-7c9445b569-", "")
@@ -54,8 +62,12 @@ def collect_logs(pods, namespace="default"):
                 with open(pod_log_path, "a", encoding="utf-8") as pod_log_file:
                     pod_log_file.write(log_result.stdout)
                 all_log_file.write(log_result.stdout)
-                all_log_file.write(f"====== Recolección de logs del pod {pod} completada ======\n")
-                all_log_file.write("----------------------------------------------------------\n")
+                all_log_file.write(
+                    f"====== Recolección de logs del pod {pod} completada ======\n"
+                )
+                all_log_file.write(
+                    "----------------------------------------------------------\n"
+                )
 
                 print(f"Logs del pod {pod} guardados en {pod_log_path}")
             except subprocess.CalledProcessError as e:
@@ -69,7 +81,9 @@ def get_events(namespace="default"):
         try:
             events_result = subprocess.run(
                 ["kubectl", "get", "events", "-n", namespace],
-                capture_output=True, text=True, check=True
+                capture_output=True,
+                text=True,
+                check=True,
             )
             all_log_file.write(events_result.stdout)
             print(f"Eventos del clúster guardados en {logs_dir / 'all_events.log'}")

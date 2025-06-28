@@ -27,7 +27,7 @@ def find_root_dir(target_folder_name):
     return current
 
 
-root_dir = find_root_dir("test-repo-pc4")
+root_dir = find_root_dir("Proyecto7-PC4")
 
 metrics_dir = root_dir / "metrics"
 metrics_dir.mkdir(exist_ok=True)

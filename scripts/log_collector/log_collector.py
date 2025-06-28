@@ -18,7 +18,7 @@ def find_root_dir(target_folder_name):
 namespace = sys.argv[1] if len(sys.argv) > 1 else "default"
 
 
-root_dir = find_root_dir("test-repo-pc4")
+root_dir = find_root_dir("Proyecto7-PC4")
 
 
 logs_dir = root_dir / "logs"

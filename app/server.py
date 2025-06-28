@@ -1,6 +1,8 @@
 from flask import Flask, Response
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
+from logger_service import start_background_logging, logger
+
 
 app = Flask(__name__)
 
@@ -18,4 +20,6 @@ def get_current_time():
 
 
 if __name__ == "__main__":
+    start_background_logging()
+    logger.info("Flask server starting on 0.0.0.0:80")
     app.run(host='0.0.0.0', port=80)

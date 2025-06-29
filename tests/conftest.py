@@ -1,5 +1,7 @@
 import pytest
 from kubernetes import config, client
+import shutil
+from pathlib import Path
 
 NAMESPACE = "default"
 DEPLOYMENT_NAME = "timeserver"
@@ -15,6 +17,11 @@ def resource_names():
         "service": SERVICE_NAME,
         "pod_label_selector": POD_LABEL_SELECTOR
     }
+
+
+@pytest.fixture(scope="session")
+def project_root():
+    return Path(__file__).parent.parent
 
 
 @pytest.fixture(scope="session")
@@ -59,6 +66,7 @@ def timeserver_service(kube_core_api_client: client.CoreV1Api):
     except Exception as e:
         pytest.fail(f"Fallo al encontrar el Service '{SERVICE_NAME}'. Error: {e}")
 
+
 @pytest.fixture(scope="module")
 def timeserver_pods(kube_core_api_client: client.CoreV1Api):
     try:
@@ -68,3 +76,44 @@ def timeserver_pods(kube_core_api_client: client.CoreV1Api):
         return pods.items
     except Exception as e:
         pytest.fail(f"Fallo al listar los pods. Error: {e}")
+
+
+@pytest.fixture(scope="function")
+def observability_dirs(project_root):
+    dirs = {
+        "metrics": project_root / "metrics",
+        "logs": project_root / "logs",
+        "alerts": project_root / "alerts"
+    }
+    for path in dirs.values():
+        if path.exists():
+            shutil.rmtree(path)
+        path.mkdir(parents=True, exist_ok=True)
+    yield dirs
+    for path in dirs.values():
+        if path.exists():
+            shutil.rmtree(path)
+
+
+@pytest.fixture(scope="function")
+def run_metric_collector(observability_dirs):
+    from scripts.metric_collector import metric_collector
+    try:
+        metric_collector.main()
+        return observability_dirs["metrics"]
+    except Exception as e:
+        pytest.fail(f"La recoleccion de metricas fallo: {e}")
+
+
+@pytest.fixture(scope="function")
+def run_log_collector(observability_dirs, timeserver_pods):
+    from scripts.log_collector import log_collector
+    if not timeserver_pods:
+        pytest.skip("No se encontraron pods para la recoleccion de logs.")
+
+    pod_names = [p.metadata.name for p in timeserver_pods]
+    try:
+        log_collector.collect_logs(pod_names, NAMESPACE)
+        return observability_dirs["logs"]
+    except Exception as e:
+        pytest.fail(f"La recoleccion de logs fallo: {e}")

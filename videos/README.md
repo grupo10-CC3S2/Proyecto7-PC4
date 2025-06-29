@@ -9,3 +9,7 @@
 ## Sprint-1
 
 [Video Sprint 1](https://drive.google.com/file/d/1tIrF-FU1v7B8dVrN-dbGRqnPmfwTTgwl/view?usp=drive_link)
+
+## Sprint-2
+
+[Video Sprint 2](https://drive.google.com/file/d/14Z8FHLXlaGn3w7PuGp_7PCWK98kEiZxH/view?usp=drive_link)

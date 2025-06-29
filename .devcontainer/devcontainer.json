@@ -1,0 +1,32 @@
+{
+	"name": "k8s devcontainer",
+
+	"image": "mcr.microsoft.com/devcontainers/base:bullseye",
+
+	"features": {
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {
+			"version": "latest",
+			"helm": "none",
+			"minikube": "none"
+		},
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
+
+	"postCreateCommand": "curl -s https://fluxcd.io/install.sh | bash",
+
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+		"source=${localEnv:HOME}/.kube,target=/home/vscode/.kube,type=bind,consistency=cached"
+	],
+
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-kubernetes-tools.vscode-kubernetes",
+				"ms-azuretools.vscode-docker",
+				"weaveworks.vscode-flux",
+				"redhat.vscode-yaml"
+			]
+		}
+	}
+}

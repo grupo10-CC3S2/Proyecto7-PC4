@@ -2,6 +2,10 @@ import pytest
 from kubernetes import config, client
 import shutil
 from pathlib import Path
+from scripts.metric_collector import metric_collector
+from scripts.log_collector import log_collector
+from scripts.metric_collector import metric_visualizer
+import pandas as pd
 
 NAMESPACE = "default"
 DEPLOYMENT_NAME = "timeserver"
@@ -97,7 +101,6 @@ def observability_dirs(project_root):
 
 @pytest.fixture(scope="function")
 def run_metric_collector(observability_dirs):
-    from scripts.metric_collector import metric_collector
     try:
         metric_collector.main()
         return observability_dirs["metrics"]
@@ -107,7 +110,6 @@ def run_metric_collector(observability_dirs):
 
 @pytest.fixture(scope="function")
 def run_log_collector(observability_dirs, timeserver_pods):
-    from scripts.log_collector import log_collector
     if not timeserver_pods:
         pytest.skip("No se encontraron pods para la recoleccion de logs.")
 
@@ -117,3 +119,33 @@ def run_log_collector(observability_dirs, timeserver_pods):
         return observability_dirs["logs"]
     except Exception as e:
         pytest.fail(f"La recoleccion de logs fallo: {e}")
+
+
+@pytest.fixture(scope="function")
+def run_metric_visualizer(run_metric_collector):
+    try:
+        metric_visualizer.main()
+        return run_metric_collector
+    except Exception as e:
+        pytest.fail(f"La visualización de métricas falló: {e}")
+
+
+@pytest.fixture
+def mock_metrics_dir(tmp_path):
+    metrics_path = tmp_path / "metrics"
+    pods_path = metrics_path / "pods"
+    pods_path.mkdir(parents=True)
+
+    pd.DataFrame({
+        'NAME': ['pod-1'],
+        'CPU(cores)': ['5m'],
+        'MEMORY(bytes)': ['10Mi']
+    }).to_csv(pods_path / "normal_metrics.csv", sep='\t', index=False)
+
+    pd.DataFrame({
+        'NAME': ['pod-2'],
+        'CPU(cores)': ['15m'],
+        'MEMORY(bytes)': ['20Mi']
+    }).to_csv(pods_path / "alert_metrics.csv", sep='\t', index=False)
+
+    return metrics_path

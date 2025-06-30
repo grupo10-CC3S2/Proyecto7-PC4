@@ -1,4 +1,4 @@
-from flask import Flask, Response
+from flask import Flask, Response, jsonify
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from logger_service import start_background_logging, logger
@@ -17,6 +17,11 @@ def get_current_time():
     response_string = now.strftime("La hora es %I:%M %p, UTC.\n")
     response_string += now_lima.strftime("La hora en Lima es %I:%M %p.\n")
     return Response(response_string, mimetype='text/plain')
+
+
+@app.route("/health")
+def health_check():
+    return jsonify({"status": "ok"})
 
 
 if __name__ == "__main__":

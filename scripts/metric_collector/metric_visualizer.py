@@ -5,6 +5,9 @@ import subprocess
 import pandas as pd
 from tabulate import tabulate
 import plotly.express as px
+import json
+from datetime import datetime
+
 
 # Comandos para obtener métricas de pods y nodes
 # 1.- kubectl top pods -n <namespace>
@@ -28,6 +31,20 @@ root_dir = find_root_dir("Proyecto7-PC4")
 
 metrics_dir = root_dir / "metrics"
 metrics_dir.mkdir(exist_ok=True)
+
+
+def get_namespaces():
+    namespaces = subprocess.run(
+        ["kubectl", "get", "namespaces", "-o", "name"],
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+    all_namespaces = [
+        line.replace("namespace/", "")
+        for line in namespaces.stdout.strip().splitlines()
+    ]
+    return all_namespaces
 
 
 # Visualización de métricas
@@ -130,8 +147,74 @@ def generate_html_graph_nodes(df, output_path, name):
     print(f"\nGráfico HTML guardado en: {name}")
 
 
+def check_umbral(path, kind):
+    df = pd.read_csv(path, sep=r'\s+')
+
+    umbral_cpu = 10
+
+    def convertir_cpu(cpu_str):
+        if isinstance(cpu_str, str) and cpu_str.endswith("m"):
+            return int(cpu_str[:-1])
+        return 0
+
+    df['CPU_m'] = df['CPU(cores)'].apply(convertir_cpu)
+
+    for index, row in df.iterrows():
+        if row['CPU_m'] > umbral_cpu:
+            print(f"Alerta: El {kind} {row['NAME']} está usando {row['CPU_m']}m de CPU (>{umbral_cpu}m)")
+
+
+def alert_umbral():
+    path = metrics_dir
+    folders = os.listdir(path)
+    for folder in folders:
+        files_path = path / folder
+        files = os.listdir(files_path)
+        for file in files:
+            if file.endswith(".csv"):
+                with open(files_path / file, "r", encoding="utf-8") as f:
+                    read = f.read()
+                if read:
+                    check_umbral(files_path / file, kind=folder)
+
+
+def alert_pods_not_ready(namespaces):
+    for ns in namespaces:
+        try:
+            result = subprocess.run(
+                ["kubectl", "get", "pods", "-n", ns, "-o", "json"],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            pods_json = json.loads(result.stdout)
+
+            for pod in pods_json["items"]:
+                pod_name = pod["metadata"]["name"]
+                conditions = pod.get("status", {}).get("conditions", [])
+                ready_condition = next((c for c in conditions if c["type"] == "Ready"), None)
+
+                if ready_condition and ready_condition["status"] != "True":
+                    # Modificar el status a False para verificar que funciona
+                    last_transition = ready_condition.get("lastTransitionTime")
+                    if last_transition:
+                        dt = datetime.strptime(last_transition, "%Y-%m-%dT%H:%M:%SZ")
+                        now = datetime.utcnow()
+                        duration = now - dt
+                        if duration.total_seconds() > 300:  # > 5 minutos
+                            print(f"⚠️ Alerta: El pod '{pod_name}' en el namespace '{ns}' no está Ready desde hace más de 5 minutos.")
+                        else:
+                            print(f"⚠️ El pod '{pod_name}' en el namespace '{ns}' no está Ready (desde {last_transition})")
+                    else:
+                        print(f"⚠️ El pod '{pod_name}' en el namespace '{ns}' no está Ready (sin timestamp)")
+        except subprocess.CalledProcessError as e:
+            print(f"Error al obtener estado de pods en el namespace {ns}: {e.stderr}")
+
+
 def main():
     visualize_metrics_console()
+    alert_umbral()
+    alert_pods_not_ready(get_namespaces())
 
 
 if __name__ == "__main__":

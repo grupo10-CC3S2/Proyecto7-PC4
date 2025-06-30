@@ -88,3 +88,7 @@ El objetivo de esta función es para cumplir con el primer requisito de la rúbr
 
 ## Funcion generate_html_graph
 Esta función termina de cumplir el último objetivo de la tarea, la cuál es generar un archivo `html` donde sea posible su visualización, en un primer momento lo quise realizar de manera vertical, pero luego como hay una gran diferencia entre los datos de las columnas, había perdida de datos o mejor dicho, no se podía ver correctamente algunas barras, así que para esta función lo que hice fue que los gráficos de barras se muestren de manera horizontal, ya que así tendrá más tamaño y podrá verse el gráfico correctamente con todas las columnas que presentan los archivos `csv`
+
+# Ejecución
+
+La forma de ejecutar es primero correr el programa `metric_collector.py` y luego `metric_visualizer.py` ya que el último script lee los archvos que se crearon con  `metric_collector.py`

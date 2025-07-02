@@ -35,4 +35,11 @@ jobs:
     - name: Check pods
       run: kubectl get pods -A
 
-    
+    - name: Install metrics-server
+      run: kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+
+    - name: Sleep 15 seconds
+      run: sleep 15
+
+    - name: Check metrics-server
+      run: kubectl get pods -A

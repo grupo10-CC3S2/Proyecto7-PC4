@@ -4,10 +4,49 @@ metadata:
   name: timeserver
   namespace: default
 spec:
+  type: NodePort
   selector:
     pod: timeserver-pod
   ports:
-  - port: 8080
-    targetPort: 80
+  - port: 80        # puerto interno del servicio
+    targetPort: 80  # puerto del contenedor
+    nodePort: 30080 # puerto en localhost de maquina local
     protocol: TCP
-  type: LoadBalancer
+    name: http
+
+---
+
+# Servicio para la UI de Jaeger
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-ui
+  namespace: default
+spec:
+  type: NodePort 
+  selector:
+    app: jaeger
+  ports:
+  - port: 16686         # puerto interno de la UI
+    targetPort: 16686   # puerto del contenedor de Jaeger
+    nodePort: 30686     # puerto en localhost de maquina local
+    protocol: TCP
+    name: ui-port
+
+---
+
+# Servicio para el colector de Jaeger
+apiVersion: v1
+kind: Service
+metadata:
+  name: jaeger-collector
+  namespace: default
+spec:
+  type: ClusterIP # comunicacion interna
+  selector:
+    app: jaeger
+  ports:
+  - port: 4318
+    targetPort: 4318
+    protocol: TCP
+    name: otlp-http

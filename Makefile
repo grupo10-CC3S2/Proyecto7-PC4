@@ -1,7 +1,7 @@
 REPO = "https://github.com/grupo10-CC3S2/Proyecto7-PC4"
 
 build-image:
-	docker build -t timeserver:v3 app
+	docker build -t timeserver:v5 app
 
 setup-minikube:
 	minikube start --container-runtime=docker
@@ -18,7 +18,7 @@ setup:
 	kubectl cluster-info
 	kubectl apply -f k8s/
 	kubectl get pods
-
+	kubectl get services
 clear:
 	kubectl delete all --all --namespace=default --force --grace-period=0
 

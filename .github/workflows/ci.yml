@@ -42,4 +42,4 @@ jobs:
       run: sleep 15
 
     - name: Check metrics-server
-      run: kubectl get pods -A
+      run: kubectl top pods 

@@ -59,6 +59,20 @@ jobs:
 
     - name: Check metrics-server
       run: kubectl top pods 
+
+    - name: Verificar servicios levantado
+      run: kubectl get svc
+
+    - name: Dirigiendo puerto
+      run: kubectl port-forward service/user-service 8080:80
+
+    - name: Esperar a que el servicio esté listo
+      run: |
+        for i in {1..10}; do
+          curl -s http://localhost:8080/health && break
+          echo "Esperando que el servicio esté listo..."
+          sleep 2
+        done
     
     - name: Corriendo los tests
       run: pytest

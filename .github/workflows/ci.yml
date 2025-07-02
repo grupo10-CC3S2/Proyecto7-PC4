@@ -17,4 +17,4 @@ jobs:
         minikube image build -t local/devex:v1 .
     - name: Deploy to minikube
       run:
-        kubectl apply -f k8s/
+        kubectl apply -f k8s\

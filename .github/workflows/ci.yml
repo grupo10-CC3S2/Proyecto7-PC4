@@ -35,8 +35,12 @@ jobs:
     - name: Check pods
       run: kubectl get pods -A
 
-    - name: Install metrics-server
-      run: kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+    - name: Install metrics-server (with fix for Minikube)
+      run: |
+        kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml
+        kubectl patch deployment metrics-server -n kube-system \
+          --type='json' \
+          -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value":"--kubelet-insecure-tls"}]'
 
     - name: Sleep 15 seconds
       run: sleep 15

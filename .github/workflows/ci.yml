@@ -6,14 +6,23 @@ jobs:
     name: build example and deploy to minikube
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Start minikube
       uses: medyagh/setup-minikube@latest
+
+    - name: Build docker images
+      run: |
+        docker build -t timeserver:v3 app
+    
     - name: Try the cluster!
       run: kubectl get pods -A
+
     - name: Build image
       run: |
         minikube image build -t local/devex:v1 .
     - name: Deploy to minikube
       run:
         kubectl apply -f k8s\
+
+    - name: Check pods
+      run: kubectl get pods -A

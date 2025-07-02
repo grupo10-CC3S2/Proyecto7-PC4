@@ -55,4 +55,4 @@ Para borrar todo lo creado y liberar recursos:
    docker image rm timeserver
    ```
 
-Editando 1
+Editando 2

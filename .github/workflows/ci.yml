@@ -42,6 +42,18 @@ jobs:
           --type='json' \
           -p='[{"op": "add", "path": "/spec/template/spec/containers/0/args/-", "value":"--kubelet-insecure-tls"}]'
 
+    - name: Wait for metrics-server to be ready (max 60s)
+      run: |
+        for i in {1..12}; do
+          echo "Esperando metrics-server ($i/12)..."
+          ready=$(kubectl get pods -n kube-system | grep metrics-server | grep Running | grep '1/1' | wc -l)
+          if [ "$ready" -eq 1 ]; then
+            echo "✅ metrics-server está listo"
+            break
+          fi
+          sleep 5
+        done
+        
     - name: Sleep 15 seconds
       run: sleep 15
 

@@ -53,4 +53,4 @@ flux-suspend:
 	flux suspend kustomization kustomization-github
 
 pod-images:
-	kubectl get pods --namespace=default -o json | jq '.items[].spec.containers[] | {pod: .name, container_name: .name, image: .image}'
+	kubectl get pods -n default -o custom-columns=POD:.metadata.name,IMAGE:.spec.containers[*].image

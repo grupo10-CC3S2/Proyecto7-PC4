@@ -1,15 +1,21 @@
-name: ci
-on: [push, pull_request]
+name: CI
+on:
+  - pull_request
 jobs:
-  test:
+  job1:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python: ["3.12"]
+    name: build example and deploy to minikube
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ matrix.python }}
-      - run: pip install -r requirements.txt
-      - run: pytest
+    - uses: actions/checkout@v4
+      with:
+        repository: medyagh/local-dev-example-with-minikube
+    - name: Start minikube
+      uses: medyagh/setup-minikube@latest
+    - name: Try the cluster!
+      run: kubectl get pods -A
+    - name: Build image
+      run: |
+        minikube image build -t local/devex:v1 .
+    - name: Deploy to minikube
+      run:
+        kubectl apply -f k8s/

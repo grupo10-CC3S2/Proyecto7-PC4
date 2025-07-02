@@ -15,5 +15,5 @@ spec:
     spec:
       containers:
       - name: timeserver-container
-        image: timeserver:v3
+        image: timeserver:v4
         imagePullPolicy: Never

@@ -127,12 +127,6 @@ def main():
 
     checker = NetworkPolicyChecker(namespace="default")
 
-    # Verificar NetworkPolicies
-    policies_ok = checker.check_network_policies()
-
-    # Verificar pods afectados
-    pods_ok = checker.check_affected_pods()
-
     checker.generate_report()
 
     print("\n" + "=" * 50)

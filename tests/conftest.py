@@ -30,7 +30,7 @@ def project_root():
 
 @pytest.fixture(scope="session")
 def app_service_url():
-    return "http://localhost:8000"
+    return "http://localhost:8080"
 
 
 @pytest.fixture(scope="session")

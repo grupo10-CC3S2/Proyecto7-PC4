@@ -6,8 +6,7 @@ jobs:
     name: build example and deploy to minikube
     steps:
     - uses: actions/checkout@v4
-      with:
-        repository: medyagh/local-dev-example-with-minikube
+    
     - name: Start minikube
       uses: medyagh/setup-minikube@latest
     - name: Try the cluster!

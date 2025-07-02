@@ -7,6 +7,12 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
+    - name: Install requirements
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-pip
+        pip3 install -r requirements.txt
+
     - name: Start minikube
       uses: medyagh/setup-minikube@latest
 
@@ -21,8 +27,12 @@ jobs:
       run: |
         minikube image build -t local/devex:v1 .
     - name: Deploy to minikube
-      run:
-        kubectl apply -f k8s\
+      run: kubectl apply -f k8s/
+
+    - name: Sleep 10 seconds
+      run: sleep 10
 
     - name: Check pods
       run: kubectl get pods -A
+
+    

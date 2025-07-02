@@ -54,6 +54,9 @@ jobs:
           sleep 5
         done
 
+    - name: Sleep 15 seconds
+      run: sleep 15
+
     - name: Check metrics-server
       run: kubectl top pods 
 

@@ -48,7 +48,7 @@ jobs:
           echo "Esperando metrics-server ($i/12)..."
           ready=$(kubectl get pods -n kube-system | grep metrics-server | grep Running | grep '1/1' | wc -l)
           if [ "$ready" -eq 1 ]; then
-            echo "✅ metrics-server está listo"
+            echo "metrics-server está listo"
             break
           fi
           sleep 5

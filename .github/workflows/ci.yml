@@ -64,7 +64,7 @@ jobs:
       run: kubectl get svc
 
     - name: Dirigiendo puerto
-      run: kubectl port-forward service/timeserver 8080:80
+      run: kubectl port-forward service/timeserver 8080:8080
 
     - name: Esperar a que el servicio esté listo
       run: |

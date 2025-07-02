@@ -59,6 +59,11 @@ jobs:
 
     - name: Check metrics-server
       run: kubectl top pods 
+
+    - name: Port forward service to localhost:80
+      run: |
+        kubectl port-forward service/timeserver 80:80 &
+        sleep 5
     
     - name: Corriendo los tests
       run: pytest

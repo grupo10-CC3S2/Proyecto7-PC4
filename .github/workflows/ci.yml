@@ -53,16 +53,13 @@ jobs:
           fi
           sleep 5
         done
-        
-    - name: Sleep 15 seconds
-      run: sleep 15
 
     - name: Check metrics-server
       run: kubectl top pods 
 
-    - name: Port forward service to localhost:80
+    - name: Port forward service to localhost:8000
       run: |
-        kubectl port-forward service/timeserver 80:80 &
+        kubectl port-forward service/timeserver 8000:80 &
         sleep 5
     
     - name: Corriendo los tests

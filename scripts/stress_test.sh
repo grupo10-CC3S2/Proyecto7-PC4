@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-BASE_URL="http://localhost:30080"
+BASE_URL="http://localhost:8080"
 TOTAL_REQUESTS=100
 
 for i in $(seq 1 $TOTAL_REQUESTS); do

@@ -1,0 +1,13 @@
+El video se llamar Live-Coding-Pc5-Grupo10
+
+- Carpeta drive
+    https://drive.google.com/drive/folders/1gQ7IVGHDQQQMsOllxfmhMFmSxIkgUaSm?usp=drive_link
+
+- Video directo
+    https://drive.google.com/file/d/1PvkdcXfzaPlZtR0bOfF2wAcBsNKetYfl/view?usp=drive_link
+
+- Link de nuestro GitHub Actions
+    https://github.com/grupo10-CC3S2/Proyecto7-PC4/actions
+
+- Link de mi rama 
+    https://github.com/grupo10-CC3S2/Proyecto7-PC4/tree/feature/jesus-osorio/politicas-seguridad

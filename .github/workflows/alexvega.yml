@@ -58,6 +58,9 @@ jobs:
     - name: Verificar servicios levantado
       run: kubectl get svc
 
+    - name: Dirigiendo puerto
+      run: kubectl port-forward service/timeserver 8080:8080 &
+
     - name: Esperar a que el servicio esté listo
       run: |
         for i in {1..10}; do

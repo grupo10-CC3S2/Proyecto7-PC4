@@ -1,6 +1,6 @@
 ## Recursos de K8s
 
-En este proyecto, se utilizan varios archivos YAML para definir los recursos necesarios en Kubernetes. Estos recursos permiten desplegar y gestionar los servicios de manera eficiente. La funcion de cada archivo es:
+Los recursos de K8s permiten desplegar y gestionar los servicios de manera eficiente. La funcion de cada archivo es:
 
 1. **deploy.yaml**: En este manifest define los despliegues de las aplicaciones. Contiene especificaciones como replicas, contenedores, imagenes y configuraciones necesarias para que los pods funcionen correctamente con su version.
 
@@ -21,7 +21,7 @@ El archivo `jaeger.yaml` incluye la configuracion necesaria para desplegar Jaege
 - **Query**: Proporciona una interfaz para consultar y visualizar las trazas.
 - **UI**: Una interfaz grafica para explorar las trazas y analizar el rendimiento de los servicios.
 
-### Integracion con las Aplicaciones
+### Integracion con las aplicaciones
 
 Para que las aplicaciones puedan enviar trazas a Jaeger, es necesario configurar un cliente de trazabilidad en el codigo de las aplicaciones. Esto incluye:
 
@@ -43,9 +43,12 @@ Estos recursos desplegaran la app de Flask y la UI de Jaeger en los suientes pue
 
 ```sh
 http://localhost:30686  # UI de Jaeger
-http://localhost:30080  # App de Flask
+http://localhost:8080  # App de Flask
 ```
-Estos puertos deben empezar en el rango de 3000 porque se usa NodePort.
+
+Al ir al panel de UI de Jaeger se podran observar las trazas:
+![jaeger_ui](jaeger_ui.png)
+![error](error.png)
 
 Despues en directorio raiz, se puede usar el script para realizar requests:
 ```sh

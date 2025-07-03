@@ -20,7 +20,8 @@ jobs:
       run: |
         minikube image build -t timeserver:v5 app
     
-    - run: kubectl get pods -A
+    - name: Try the cluster!
+      run: kubectl get pods -A
 
     - name: Build image
       run: |
@@ -28,9 +29,11 @@ jobs:
     - name: Deploy to minikube
       run: kubectl apply -f k8s/
 
-    - run: sleep 10
+    - name: Sleep 10 seconds
+      run: sleep 10
 
-    - run: kubectl get pods -A
+    - name: Check pods
+      run: kubectl get pods -A
 
     - name: Install metrics-server (with fix for Minikube)
       run: |
@@ -51,9 +54,11 @@ jobs:
           sleep 5
         done
 
-    - run: sleep 15
+    - name: Sleep 15 seconds
+      run: sleep 15
 
-    - run: kubectl top pods 
+    - name: Check metrics-server
+      run: kubectl top pods 
 
     - name: Verificar servicios levantado
       run: kubectl get svc
@@ -69,5 +74,5 @@ jobs:
           sleep 2
         done
     
-    - name: test unitarios, e2e, health
+    - name: Corriendo los tests
       run: pytest

@@ -1,0 +1,161 @@
+* 87582ea (origin/feature/jesus-osorio/politicas-seguridad, feature/jesus-osorio/politicas-seguridad) feat(pipline): Añade script que implementa git action
+* afd2164 fix(script): Actualización del script por parte de Flake8
+* ddd0b4f feat(check): Añade script que verifica la existencia del network policy
+* a1884fb docs(md): Añade documentación de explicación y como usar el network-policy
+* 8edc71f feat(policy): Añade política de seguridad de red
+| * b5ea17c (origin/feature/alex-vega/jaeger-tracing, feature/alex-vega/jaeger-tracing) feat(yaml): actualiza puerto para exponer a maquina host
+| * 8de512a feat(sh): actualiza para puerto 8080
+| * e9cc30c docs(md): actualiza comando para nueva version de imagen
+| * 54c1489 docs(md): agrega README para recursos de k8s y trazabilidad con jaeger
+| * 01e94ac feat(sh): agrega script para realizar distintos tipos de requests al deployment
+| * 767a805 feat(yaml): agrega servicios para comunicarse con jaeger ui y collector
+| * 4f7bbd6 feat(yaml): agrega deployment para jaeger
+| * 08cbfd1 feat(yaml): actualiza version de imagen
+| * c98b233 feat(make): actualiza comand para obtener tags de images sin jq
+| * cc21520 usa nueva version de imagen en pods
+| * 231b5b4 feat(py): usa configuracion en servidor de flask
+| * 50736c9 feat(py): agreaga configuracion para trazas usando opentelemetry
+| * 8498253 feat(dockerfile): agrega librerias para tracing
+| * d6e3535 feat(make): agrega comandos para setup y clear del proyecto usando minikube o kubectl
+|/  
+| * e8e4411 (origin/feature/christian-luna/alert-manager) fix(port): Actualizando puertos a 8080
+| * 4057342 docs(md): Documentación sobre la implementación de notificación de alertas
+| * 1d10234 feat(py): Agregar envio de notificaciones basado en las alertas
+|/  
+| * 30acaaa (origin/feature/gh-actions-0) ci(yml): actualiza puerto de localhost
+| * 73e15b0 test(py): actualiza puerto de apps de pods
+| * 2cba866 docs(md): Test 22 - pipeline
+| * a7bb858 docs(md): Test 21 - pipeline
+| * 034c59b docs(md): Test 21 - pipeline
+| * 7c7106b docs(md): Test 20 - pipeline
+| * a05f2d2 docs(md): Test 19 - pipeline
+| * e590d1f docs(md): Test 18 - pipeline
+| * 8e329b2 docs(md): Test 17 - pipeline
+| * 62f6909 docs(md): Test 16 - pipeline
+| * e0322f9 docs(md): Test 15 - pipeline
+| * eee3381 docs(md): Test 14 - pipeline
+| * 06d05f2 docs(md): Test 13 - pipeline
+| * 7df46cf docs(md): Test 12 - pipeline
+| * 987ac30 docs(md): Test 11 - pipeline
+| * 233aa2f docs(md): Test 10 - pipeline
+| * da95ef6 docs(md): Test 9 - pipeline
+| * 34036df docs(md): Test 8 - pipeline
+| * bae35fa docs(md): Test 7 - pipeline
+| * 6637cde docs(md): Test 7 - pipeline
+| * 3665234 docs(md): Test 6 - pipeline
+| * f7f9caa docs(md): Test 5 - pipeline
+| * 9318678 docs(md): Test 4 - pipeline
+| * e4e89a6 docs(md): Test 3 - pipeline
+| * 236fea3 docs(md): Test 2 - pipeline
+| * af10c48 docs(md): Test 2 - pipeline
+| * ca7a886 docs(md): Test 2 - pipeline
+| * efcdddd docs(md): Test 1 - pipeline
+| * 7cce263 ci(yml): agrega github action para tests
+|/  
+| *   70c9385 (HEAD -> main, origin/main, origin/HEAD) Merge pull request #27 from grupo10-CC3S2/develop
+| |\  
+| |/  
+|/|   
+* | a301394 (origin/develop, develop) docs(md): Añade video de sprint 3 y video final de la Pc4
+* |   a31c3f5 Merge pull request #26 from grupo10-CC3S2/feature/scripts/alertas
+|\ \  
+| * | b415202 (origin/feature/scripts/alertas) feat(py): Implementando funcionamiento de gestión de alertar en nuestro visualizar de métricas
+* | |   5fdc70f Merge pull request #25 from grupo10-CC3S2/feature/script/chaos-test
+|\ \ \  
+| * | | 3e85acd (origin/feature/script/chaos-test, feature/script/chaos-test) feat(chaos): Añade script chaos-test que simula la eliminación de un pod, detecta el problema y genera una alerta
+| |/ /  
+* | |   ef4fc39 Merge pull request #24 from grupo10-CC3S2/tests/health-e2e-tests
+|\ \ \  
+| |/ /  
+|/| |   
+| * | 3a04144 (origin/tests/health-e2e-tests) test(ini): agrega configuracion para pytest
+| * | ad75340 test(py): agrega test para visualizer de metricas
+| * | fba8d1c fix(py): fix creacion de dirs en tests de metricas
+| * | d24afa7 test(py): agrega fixtures para tests de alertas
+| * | d52fb9c test(py): agrega test e2e para logs y metricas
+| * | 3201003 test(py): agrega conftest con fixtures para test e2e
+| * | a7806e6 test(py): agrega test de health de infra
+| * | 74bca38 test(py): agrega test de health de app
+| * | 6de2319 test(py): agrega conftest con fixtures de kubernetes para probar api y recursos
+| * | 3eb65fa feat(yaml): actualiza version de imagen a v3
+| * | aed328b feat(py): agrega ruta de health
+|/ /  
+| *   ccc1795 Merge pull request #23 from grupo10-CC3S2/develop
+| |\  
+| |/  
+|/|   
+* | 35b3919 docs(md): Añade link del video del sprint 2
+* |   7d9a8b4 Merge pull request #20 from grupo10-CC3S2/feature/gitops-flux
+|\ \  
+| * | a04ec92 (origin/feature/gitops-flux) feat(yaml): actualiza version de imagen
+| * | ff2f83f feat(make): fix variable url
+| * | 957948a feat(yaml): agrega archivos gitops de fluxcd
+| * | b44c68a feat(make): agrega opciones para gitops para el uso facil de fluxcd
+| * | 20805e2 feat(yaml): actualiza version, agrega namespace para fluxcd
+| * | dfa1982 feat(dev): agrega devcontainer para uso de fluxcd
+| * | d145309 feat(py): agrega logger service para app, en 3 niveles
+| * | f924f9b feat(make): agrega comando para obtener dos versiones de images
+* | |   4404b05 Merge pull request #22 from grupo10-CC3S2/feature/scripts/metric_visualizer
+|\ \ \  
+| * | | 956e81f (origin/feature/scripts/metric_visualizer) feat(py): Añadir pruebas para metric_collector.py y metric_visualizer.py
+| * | | 755f3d1 fix(py): Actualizar ubicación de directorio raíz
+| * | | 7a68c25 docs(gitignote): Actualizar gitignore para excluir debug.log
+| * | | a406f5d feat(py): Añadir metric_visualizar.py con documentación
+|/ / /  
+* | |   cd33380 Merge pull request #21 from grupo10-CC3S2/feature/script/metric-collector
+|\ \ \  
+| |/ /  
+|/| |   
+| * | ee35498 (origin/feature/script/metric-collector, feature/script/metric-collector) fix(py): Actualiza ubicación del directorio raiz
+| * | f7d2118 fix(py): Actualiza información de ubicación de log_collector
+| * | 4ca363f fix(py): Actualiza metric_collector.py
+| * | 0aa4026 feat(py): Añade metric_collector.py con documentación
+| * | f5a11ed docs(txt): Actualiza las dependencias necesarias para el proyecto
+| * | acc6631 fix(py): Actualiza log_collector.py
+| * | 41ac887 fix(py): Actualiza log_collector.py y agrupa en carpetas
+|/ /  
+| *   e71cb53 Merge pull request #19 from grupo10-CC3S2/develop
+| |\  
+| |/  
+|/|   
+* |   d74dd54 Merge pull request #18 from grupo10-CC3S2/videos/sprint1
+|\ \  
+| * | 6118c71 (origin/videos/sprint1) docs(sprint1): Agregar video de finalización de sprint1
+|/ /  
+* |   6cfcc8a Merge pull request #17 from grupo10-CC3S2/feature/scripts/collect_logs_and_events
+|\ \  
+| * | c2f55fb (origin/feature/scripts/collect_logs_and_events) test(py): Agregar pruebas con marcas xfail y skip para el archivo log_collector.py
+| * | 2b0c7a5 docs(md): Añadir documentación de los scripts log_collector.py y log_collector.sh
+| * | d1db1bb feat(scripts): Implementando script log_collector.py y log_collector.sh para la recolección de logs y eventos de los pods
+* | |   4d244dc Merge pull request #16 from grupo10-CC3S2/hotfix/fix-readme-1
+|\ \ \  
+| |/ /  
+|/| |   
+| * | b7431f5 (origin/hotfix/fix-readme-1) fix(md): remueve lineas
+|/ /  
+* |   310fdc0 Merge pull request from feature/docker-k8s-iniciales
+|\ \  
+| * | 6c8c003 (origin/feature/docker-k8s-iniciales) docs(md): agrega README inicial
+| * | 34706e1 feat(yaml): agrega manifest inicial de servicio
+| * | 15034c7 feat(yaml): agrega manifest inicial para desplegar app
+| * | fb0da48 feat(py): agrega app inicial que es un servidor en flask
+| * | a7be7d5 feat(dockerfile): agrega dockerfile para app de flask
+| |/  
+* |   3ef52e8 Merge pull request #14 from grupo10-CC3S2/feature/conf-iniciales
+|\ \  
+| * | 611734c (origin/feature/conf-iniciales, feature/conf-iniciales) feat(dependencias): Añade archivo con dependencias necesarias
+| * | 7ed820f feat(ignore): Añade documentación con archivos a ignorar al hacer push a nuestro repositorio remoto
+| * | 87750c5 feat(flake): Añade archivo para análisis de calidad de código python
+| * | 4446fa0 feat(bandit): Añade archivo para detectar vulnerabilidades de seguridad en código python
+| |/  
+* |   9acaee1 Merge pull request #15 from grupo10-CC3S2/feature/git-hooks
+|\ \  
+| |/  
+|/|   
+| * 1bc1273 (origin/feature/git-hooks, feature/git-hooks) feat(hook): Añade install que facilita la instalación de los hooks
+| * 7f3bf76 feat(hook): Añade pre-push que impide el push desde la rama main, ejecuta los test y valida que no haya cambios pendientes entre commits
+| * 5a8d9bd feat(hook): Añade pre-commit para validación de archivos python
+| * 2d273ce feat(hook): Añade hook commit-msg para validación de archivos python siguiendo convenciones
+| * eec11a9 docs(README): Añade documentación con explicación de los hooks e instalación de los hooks
+|/  
+* f6a5bf9 Initial commit

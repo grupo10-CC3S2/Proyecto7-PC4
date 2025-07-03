@@ -4,15 +4,14 @@ metadata:
   name: timeserver
   namespace: default
 spec:
-  type: NodePort
+  type: LoadBalancer # Cambiado de NodePort a LoadBalancer
   selector:
     pod: timeserver-pod
   ports:
-  - port: 80        # puerto interno del servicio
-    targetPort: 80  # puerto del contenedor
-    nodePort: 30080 # puerto en localhost de maquina local
+  - name: http-8080
+    port: 8080      # Puerto expuesto por el LoadBalancer
+    targetPort: 80  # Puerto del contenedor
     protocol: TCP
-    name: http
 
 ---
 

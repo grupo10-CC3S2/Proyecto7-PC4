@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jaeger
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jaeger
+  template:
+    metadata:
+      labels:
+        app: jaeger
+    spec:
+      containers:
+      - name: jaeger-instance
+        image: jaegertracing/all-in-one:latest
+        ports:
+        - containerPort: 4318 # OTLP HTTP
+        - containerPort: 16686 # UI
+        - containerPort: 14268

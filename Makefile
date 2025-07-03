@@ -1,18 +1,30 @@
 REPO = "https://github.com/grupo10-CC3S2/Proyecto7-PC4"
 
-setup-v1:
-	docker build -t timeserver:v1 app
+build-image:
+	docker build -t timeserver:v5 app
+
+setup-minikube:
+	minikube start --container-runtime=docker
+	minikube kubectl cluster-info
+	minikube kubectl -- apply -f k8s/
+	minikube kubectl get pods
+	minikube dashboard
+
+clear-minikube:
+	minikube stop
+	minikube delete
+
+setup:
 	kubectl cluster-info
 	kubectl apply -f k8s/
 	kubectl get pods
-
-setup-v2:
-	docker build -t timeserver:v2 app
-	kubectl apply -f k8s/
-	kubectl get pods
+	kubectl get services
+clear:
+	kubectl delete all --all --namespace=default --force --grace-period=0
 
 teardown:
 	flux suspend kustomization kustomization-github
+	kubectl delete namespace flux-system
 	kubectl delete all --all --namespace=default --force --grace-period=0
 	docker image rm timeserver:v1
 	docker image rm timeserver:v2
@@ -41,4 +53,4 @@ flux-suspend:
 	flux suspend kustomization kustomization-github
 
 pod-images:
-	kubectl get pods --namespace=default -o json | jq '.items[].spec.containers[] | {pod: .name, container_name: .name, image: .image}'
+	kubectl get pods -n default -o custom-columns=POD:.metadata.name,IMAGE:.spec.containers[*].image

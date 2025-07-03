@@ -6,6 +6,7 @@ import pandas as pd
 from tabulate import tabulate
 import plotly.express as px
 import json
+import shutil
 
 # Comandos para obtener métricas de pods y nodes
 # 1.- kubectl top pods -n <namespace>
@@ -30,7 +31,13 @@ def find_root_dir(target_folder_name):
 root_dir = find_root_dir("Proyecto7-PC4")
 
 metrics_dir = root_dir / "metrics"
-metrics_dir.mkdir(exist_ok=True)
+
+if metrics_dir.exists() and metrics_dir.is_dir():
+    shutil.rmtree(metrics_dir)
+
+# metrics_dir.mkdir(exist_ok=True)
+# metrics_dir.mkdir(exist_ok=False)
+metrics_dir.mkdir()
 
 
 def get_namespaces():

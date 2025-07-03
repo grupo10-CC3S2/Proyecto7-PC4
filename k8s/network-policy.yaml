@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: timeserver-network-policy
+  namespace: default
+  labels:
+    app: timeserver
+    purpose: security-demo
+spec:
+  # Aplicar a pods timeserver
+  podSelector:
+    matchLabels:
+      pod: timeserver-pod
+  
+  policyTypes:
+  - Ingress
+  - Egress
+  
+  # Reglas de entrada
+  ingress:
+  - from: []  # Permitir desde cualquier origen
+    ports:
+    - protocol: TCP
+      port: 8080  # Puerto del timeserver
+  
+  # Reglas de salida
+  egress:
+  - {}  # Permitir todas las conexiones salientes

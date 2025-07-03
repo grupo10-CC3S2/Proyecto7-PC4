@@ -11,8 +11,7 @@
 
 1. Construir la imagen Docker local:
    ```sh
-   docker build -t timeserver:v1 app
-   docker build -t timeserver:v2 app
+   docker build -t timeserver:v5 app
    ```
 2. Verificar que Kubernetes esta activado:
    ```sh
@@ -54,3 +53,5 @@ Para borrar todo lo creado y liberar recursos:
    ```sh
    docker image rm timeserver
    ```
+
+Editando 2

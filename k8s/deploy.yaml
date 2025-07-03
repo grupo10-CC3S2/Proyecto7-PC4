@@ -15,5 +15,10 @@ spec:
     spec:
       containers:
       - name: timeserver-container
-        image: timeserver:v3
+        image: timeserver:v5
         imagePullPolicy: Never
+        env:
+        - name: JAEGER_HOST
+          value: "jaeger-collector"
+        ports:
+        - containerPort: 80

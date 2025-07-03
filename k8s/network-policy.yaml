@@ -21,7 +21,7 @@ spec:
   - from: []  # Permitir desde cualquier origen
     ports:
     - protocol: TCP
-      port: 80  # Puerto del timeserver
+      port: 8080  # Puerto del timeserver
   
   # Reglas de salida
   egress:

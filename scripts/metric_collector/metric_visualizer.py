@@ -6,7 +6,9 @@ import pandas as pd
 from tabulate import tabulate
 import plotly.express as px
 import json
-from datetime import datetime
+from datetime import datetime, UTC
+import smtplib
+from email.mime.text import MIMEText
 
 
 # Comandos para obtener métricas de pods y nodes
@@ -31,6 +33,9 @@ root_dir = find_root_dir("Proyecto7-PC4")
 
 metrics_dir = root_dir / "metrics"
 metrics_dir.mkdir(exist_ok=True)
+
+msg_umbral = []
+msg_ready = []
 
 
 def get_namespaces():
@@ -161,7 +166,10 @@ def check_umbral(path, kind):
 
     for index, row in df.iterrows():
         if row['CPU_m'] > umbral_cpu:
-            print(f"Alerta: El {kind} {row['NAME']} está usando {row['CPU_m']}m de CPU (>{umbral_cpu}m)")
+            # print(f"Alerta: El {kind} {row['NAME']} está usando {row['CPU_m']}m de CPU (>{umbral_cpu}m)")
+            msg_umbral = f"Alerta: El {kind} {row['NAME']} está usando {row['CPU_m']}m de CPU (>{umbral_cpu}m)"
+            print(msg_umbral)
+            return msg_umbral
 
 
 def alert_umbral():
@@ -175,7 +183,61 @@ def alert_umbral():
                 with open(files_path / file, "r", encoding="utf-8") as f:
                     read = f.read()
                 if read:
-                    check_umbral(files_path / file, kind=folder)
+                    msg_umbral.append(check_umbral(files_path / file, kind=folder))
+    # print(msg)
+
+
+def send_email():
+    port = 587
+    smtp_server = "smtp.gmail.com"
+    login = "christiangiovannixd2@gmail.com"
+    password = "wvns xury dfrj fwnz"
+
+    sender_email = login
+    receiver_email = ["christiangiovannixd@gmail.com", "christian.luna.j@uni.pe", "azvegab@gmail.com", "jesus.osorio.t@uni.pe"]
+    # "christiangiovannixd@gmail.com", "christian.luna.j@uni.pe", "azvegab@gmail.com", "jesus.osorio.t@uni.pe"
+    # receiver_email = "christiangiovannixd@gmail.com"
+    # Plain text content
+    # text = """\
+    # Text de prueba
+    # """
+    text = "Alertas reportadas en el Proyecto 7 - PC4:\n\n"
+    if not msg_umbral:
+        text = text + "Ningun pod supera el umbral de CPU.\n"
+    else:
+        text1 = "Alertas de pods que superan el umbral de CPU:\n"
+        text2 = "\n".join(m for m in msg_umbral if m is not None) if msg_umbral else "No se generaron alertas."
+        text3 = "\n=======================================================\n"
+        text = text + text1 + text2 + text3
+    if not msg_ready:
+        text = text + "Ningun pod no está listo.\n"
+    else:
+        text4 = "Alertas de pods no listos:\n\n"
+        text5 = "\n".join(m for m in msg_ready if m is not None) if msg_ready else "Todos los pods están listos."
+        text = text + text4 + text5
+
+    # text = text1 + "\n" + text2 + text3 + "\n" + text4 + "\n" + text5
+    if not receiver_email:
+        print("No se especificó un correo electrónico de destino.")
+        return
+    else:
+        for email in receiver_email:
+            if not email:
+                print("No se especificó un correo electrónico de destino.")
+                return
+            else:
+                message = MIMEText(text, "plain")
+                message["Subject"] = "Notificacion de alertas Proyecto 7 - PC4"
+                message["From"] = sender_email
+                message["To"] = email
+
+                # Send the email
+                with smtplib.SMTP(smtp_server, port) as server:
+                    server.starttls()  # Secure the connection
+                    server.login(login, password)
+                    server.sendmail(sender_email, email, message.as_string())
+
+                print(f'Se envió el correo a {email} con éxito.')
 
 
 def alert_pods_not_ready(namespaces):
@@ -198,23 +260,30 @@ def alert_pods_not_ready(namespaces):
                     # Modificar el status a False para verificar que funciona
                     last_transition = ready_condition.get("lastTransitionTime")
                     if last_transition:
-                        dt = datetime.strptime(last_transition, "%Y-%m-%dT%H:%M:%SZ")
-                        now = datetime.utcnow()
+                        dt = datetime.strptime(last_transition, "%Y-%m-%dT%H:%M:%SZ").replace(tzinfo=UTC)
+                        # print(dt)
+                        now = datetime.now(UTC)
+                        # print(now)
                         duration = now - dt
                         if duration.total_seconds() > 300:  # > 5 minutos
-                            print(f"⚠️ Alerta: El pod '{pod_name}' en el namespace '{ns}' no está Ready desde hace más de 5 minutos.")
+                            # print(f"Alerta: El pod '{pod_name}' en el namespace '{ns}' no está Ready desde hace más de {round(duration.total_seconds()/60)} minutos.")
+                            msg = f"Alerta: El pod '{pod_name}' en el namespace '{ns}' no está Ready desde hace más de {round(duration.total_seconds() / 60)} minutos."
+                            msg_ready.append(msg)
+                            print(msg)
                         else:
-                            print(f"⚠️ El pod '{pod_name}' en el namespace '{ns}' no está Ready (desde {last_transition})")
+                            print(f"El pod '{pod_name}' en el namespace '{ns}' no está Ready (desde {last_transition})")
                     else:
-                        print(f"⚠️ El pod '{pod_name}' en el namespace '{ns}' no está Ready (sin timestamp)")
+                        print(f"El pod '{pod_name}' en el namespace '{ns}' no está Ready (sin timestamp)")
         except subprocess.CalledProcessError as e:
             print(f"Error al obtener estado de pods en el namespace {ns}: {e.stderr}")
+    # print(msg_ready)
 
 
 def main():
     visualize_metrics_console()
     alert_umbral()
     alert_pods_not_ready(get_namespaces())
+    send_email()
 
 
 if __name__ == "__main__":
